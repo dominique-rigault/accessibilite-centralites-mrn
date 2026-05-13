@@ -32,11 +32,13 @@ Le document de cadrage complet est disponible dans [`docs/`](docs/).
 - Haltes SERM projetées : délibération du Conseil métropolitain 15/12/2025
 
 ## Structure du projet
+```
 ├── notebooks/        # Analyses et traitements
 ├── docs/             # Document de cadrage
 ├── data/             # Données traitées (non versionnées)
 ├── raw/              # Données brutes (non versionnées)
 └── cache/            # Cache OSMnx (non versionné)
+```
 
 ## Partenariats institutionnels envisagés
 
