@@ -31,6 +31,16 @@ Le document de cadrage complet est disponible dans [`docs/`](docs/).
 - Armature urbaine : PAS Métropole Rouen Normandie (carte n°4)
 - Haltes SERM projetées : délibération du Conseil métropolitain 15/12/2025
 
+## Limites et données manquantes
+
+### Réseau STAC (Elbeuf)
+
+Les arrêts STAC sont présents dans `arrets_2026.gpkg` avec le mode `Bus`
+mais sans affectation de lignes (champ `lignes` vide), le GTFS STAC
+n'étant pas publié sur transport.data.gouv.fr à ce stade.
+
+**Impact sur la phase 1** : aucun.
+
 ## Structure du projet
 ```
 ├── notebooks/        # Analyses et traitements
