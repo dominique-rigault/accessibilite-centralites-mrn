@@ -1,3 +1,11 @@
 cache/
-data/
 raw/
+notebooks/util.py
+
+# Données traitées — régénérables par les notebooks
+data/*.gpkg
+data/*.graphml
+data/*.html
+
+# Exception : périmètre MRN (référence stable)
+!data/perimetre_MRN.gpkg
