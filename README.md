@@ -28,18 +28,17 @@ Le document de cadrage complet est disponible dans [`docs/`](docs/).
 - Réseaux viaires piétons et cyclables : OpenStreetMap (OSMnx)
 - Réseaux TC : transport.data.gouv.fr
 - Population et logements : INSEE FiLoSoFi carroyé 200 m
-- Armature urbaine : PAS Métropole Rouen Normandie (carte n°4)
 - Haltes SERM projetées : délibération du Conseil métropolitain 15/12/2025
+- Armature urbaine :
+    Fichier des 71 communes de la MRN avec leur type de centralité.
+    **Sources** :
+    Liste des communes : [COG data.gouv.fr](https://www.data.gouv.fr/datasets/code-officiel-geographique-cog)
+    Types de centralité : PAS Métropole Rouen Normandie 2050, carte n°4
+    **Méthode** : enrichissement manuel du COG
+    Ce fichier ne peut pas être régénéré automatiquement.
 
 ## Limites et données manquantes
 
-### Réseau STAC (Elbeuf)
-
-Les arrêts STAC sont présents dans `arrets_2026.gpkg` avec le mode `Bus`
-mais sans affectation de lignes (champ `lignes` vide), le GTFS STAC
-n'étant pas publié sur transport.data.gouv.fr à ce stade.
-
-**Impact sur la phase 1** : aucun.
 
 ## Structure du projet
 ```
