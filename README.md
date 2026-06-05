@@ -26,7 +26,7 @@ Le document de cadrage complet est disponible dans [`docs/`](docs/).
 ## Sources de données
 
 - Réseaux viaires piétons et cyclables : OpenStreetMap (OSMnx)
-- Réseaux TC : transport.data.gouv.fr
+- Réseaux TC : [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/region/28?subtype=intercity&type=public-transit)
 - Population et logements : INSEE FiLoSoFi carroyé 200 m
 - Haltes SERM projetées : délibération du Conseil métropolitain 15/12/2025
 - Armature urbaine :
@@ -37,8 +37,37 @@ Le document de cadrage complet est disponible dans [`docs/`](docs/).
     **Méthode** : enrichissement manuel du COG
     Ce fichier ne peut pas être régénéré automatiquement.
 
+## Pipeline analytique
+
+Traitements organisés en notebooks numérotés, à exécuter dans l'ordre.
+`00` produit les référentiels transversaux ; `01` et `02` en dépendent
+mais sont indépendants l'un de l'autre.
+
+| Notebook | Rôle | Sortie principale |
+|----------|------|-------------------|
+| `00_referentiels.ipynb` | Périmètre administratif de la MRN (géocodage OSM) | `data/perimetre_MRN.gpkg` |
+| `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
+| `02_arrets_TC.ipynb` | Couche d'arrêts TC 2026 depuis le GTFS ATOUMOD | `data/arrets_2026.gpkg` |
+| `03_isochrones.ipynb` *— à venir* | Isochrones piétonnes et cyclables en routage réel depuis les arrêts | — |
+| `04_jointure_logements_isochrones.ipynb` *— à venir* | Jointure spatiale population (carroyage 200 m) ↔ isochrones | — |
+| `05_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle situation actuelle / SERM 2030 | — |
+
+> Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
+
 ## Limites et données manquantes
 
+- **Précision du carroyage** : le carroyage INSEE de 200 m introduit une 
+  erreur de localisation comprise entre 0 et 100 m, soit de 0 à 1,2 mn à 
+  pied. L'utilisation de la BDNB (Base de Données Nationale des Bâtiments) 
+  permettrait de réduire cette marge en localisant la population au bâtiment.
+- **Haltes SERM 2030** : en l'absence de couche SIG officielle à ce stade, 
+  les coordonnées des haltes projetées sont géolocalisées manuellement à 
+  partir des documents techniques publics (délibération du 15/12/2025).
+- **Périmètre exclu (extensions ultérieures)** :
+    - routage depuis les lieux de travail (base SIRENE) ;
+    - analyse multicritères PLUi / PDM / SERM ;
+    - horizons SERM pré-LNPN et post-LNPN, à traiter lorsque les données 
+      de desserte seront stabilisées.
 
 ## Structure du projet
 ```
