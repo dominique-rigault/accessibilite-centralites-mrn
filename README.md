@@ -49,13 +49,15 @@ mais sont indépendants l'un de l'autre.
 | `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
 | `02_arrets_TC.ipynb` | Couche d'arrêts TC 2026 depuis le GTFS ATOUMOD | `data/arrets_2026.gpkg` |
 | `03_isochrones.ipynb` *— à venir* | Isochrones piétonnes et cyclables en routage réel depuis les arrêts | — |
-| `04_jointure_logements_isochrones.ipynb` *— à venir* | Jointure spatiale population (carroyage 200 m) ↔ isochrones | — |
-| `05_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle situation actuelle / SERM 2030 | — |
+| `04_logements.ipynb` | Jointure spatiale population (carroyage 200 m) ↔ isochrones | — |
+| `05_jointure_logements_isochrones.ipynb` *— à venir* | Jointure spatiale population (carroyage 200 m) ↔ isochrones | — |
+| `06_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle situation actuelle / SERM 2030 | — |
 
 > Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
 
 ## Limites et données manquantes
 
+- **Ecart de popullation** : population fiscale Filosofi 2021 (453 k individus de ménages) inférieure d'environ 8 % à la population municipale 2021 (491 k), différence imputable au champ des ménages fiscaux — hors population des communautés — et dans une moindre mesure aux carreaux imputés et à l'hypothèse de densité uniforme pour les carreaux traversés par la limite de la MRN.
 - **Précision du carroyage** : le carroyage INSEE de 200 m introduit une 
   erreur de localisation comprise entre 0 et 100 m, soit de 0 à 1,2 mn à 
   pied. L'utilisation de la BDNB (Base de Données Nationale des Bâtiments) 

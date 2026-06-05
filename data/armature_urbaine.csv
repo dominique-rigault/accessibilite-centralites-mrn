@@ -1,4 +1,4 @@
-TYPECOM;COM;REG;DEP;CTCD;ARR;TNCC;;Centralité;NCC;NCCENR;LIBELLE;CAN;COMPARENT
+TYPECOM;COM;REG;DEP;CTCD;ARR;TNCC;Centralité_code;Centralité_nom;NCC;NCCENR;LIBELLE;CAN;COMPARENT
 COM;76540;28;76;76D;763;0;1;Centralité métropolitaine;ROUEN;Rouen;Rouen;;
 COM;76231;28;76;76D;763;1;2;Centralité structurante;ELBEUF;Elbeuf;Elbeuf;;
 COM;76108;28;76;76D;763;0;3;Centralité urbaine;BOIS GUILLAUME;Bois-Guillaume;Bois-Guillaume;;
