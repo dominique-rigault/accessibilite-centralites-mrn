@@ -7,9 +7,30 @@ Régional Métropolitain (SERM) à l'horizon 2030.
 
 ## Question analytique
 
-> Quelle part de la population métropolitaine accède depuis son lieu 
-> d'habitation aux transports en commun en moins de 15 minutes à pied 
-> ou à vélo, et comment le SERM modifie-t-il cette proportion ?
+> Pour chaque lieu d'habitation, quel est le meilleur niveau de desserte 
+> en transport en commun structurant atteignable en moins de 15 minutes 
+> à pied ou à vélo, et quelle part de la population voit ce niveau s'élever 
+> avec le SERM 2030 ?
+
+**Indicateur retenu.** L'accès binaire à un arrêt *quelconque* est saturé à
+l'échelle de l'agglomération (presque tout habitant est à moins de 15 min d'un
+arrêt) : il ne mesure pas ce que change le SERM, qui agit sur le réseau
+structurant et non sur le maillage bus. L'indicateur est donc le **meilleur
+niveau de desserte structurante atteignable** à pied ou à vélo, ordonné par
+portée croissante :
+
+`aucun < bus < TEOR < tram < car express < train (SERM)`
+
+La lecture avant / après mesure le nombre d'habitants dont ce niveau s'élève
+avec le SERM 2030. Les temps de parcours sont restitués en gradient
+(5 / 10 / 15 min) plutôt qu'à un seuil unique. Le bac, structurant sur son seul
+corridor et marginal en population, est exclu de la hiérarchie.
+
+**Périmètres d'analyse.** Deux périmètres sont distingués : l'*offre* (réseaux
+viaires + arrêts) est étendue à la MRN augmentée d'un tampon +3 750 m pour les
+arrêts (15 min à vélo), +5 000 m pour les graphes viaires, afin de capter les
+arrêts hors MRN plus proches d'un habitant qu'un arrêt interne; la *demande*
+(population Filosofi) reste circonscrite à la MRN stricte.
 
 ## Cadrage
 
@@ -55,12 +76,12 @@ mais sont indépendants l'un de l'autre.
 | Notebook | Rôle | Sortie principale |
 |----------|------|-------------------|
 | `00_referentiels.ipynb` | Périmètre administratif de la MRN (géocodage OSM) | `data/perimetre_MRN.gpkg` |
-| `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
-| `02_arrets_TC.ipynb` | Couche d'arrêts TC 2026 depuis le GTFS ATOUMOD | `data/arrets_2026.gpkg` |
-| `03_isochrones.ipynb` *— à venir* | Isochrones piétonnes et cyclables en routage réel depuis les arrêts | — |
-| `04_logements.ipynb` | Couche de population localisée (Filosofi 200 m, découpe MRN) | `data/population_carreaux_MRN.gpkg` |
-| `05_jointure_logements_isochrones.ipynb` *— à venir* | Jointure spatiale population (carroyage 200 m) ↔ isochrones | — |
-| `06_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle situation actuelle / SERM 2030 | — |
+| `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx), périmètre offre (MRN + tampon 5 km) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
+| `02_arrets_TC.ipynb` | Couche d'arrêts TC 2026 depuis le GTFS ATOUMOD, périmètre offre (MRN + tampon 3,75 km), attribut de niveau de desserte | `data/arrets_2026.gpkg` |
+| `03_isochrones.ipynb` * à venir* | Isochrones piétonnes et cyclables en routage réel depuis les arrêts, niveau de desserte conservé | — |
+| `04_logements.ipynb` | Couche de population localisée (Filosofi 200 m, découpe MRN stricte) | `data/population_carreaux_MRN.gpkg` |
+| `05_jointure_logements_isochrones.ipynb` *— à venir* | Jointure spatiale population ↔ isochrones, meilleur niveau de desserte atteignable par carreau | — |
+| `06_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle 2026 / SERM 2030 : habitants gagnant un niveau de desserte | — |
 
 > Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
 
@@ -69,13 +90,13 @@ mais sont indépendants l'un de l'autre.
 Au-delà des cartes d'isochrones, l'analyse est construite pour produire une
 lecture directement actionnable :
 
-- **Part de population desservie (< 15 min), avant / après SERM** — à l'échelle
-  métropolitaine, puis par commune et par type de centralité : l'indicateur
-  d'équité territoriale.
-- **Secteurs habités en déficit d'accès malgré le SERM 2030** — cartographie des
+- **Part de population atteignant une desserte structurante (< 15 min), et
+  niveau atteint, avant / après SERM** à l'échelle métropolitaine, puis par
+  commune et par type de centralité : l'indicateur d'équité territoriale.
+- **Secteurs habités en déficit d'accès malgré le SERM 2030** cartographie des
   zones où se posent les arbitrages de rabattement et d'aménagement.
-- **Gain marginal du SERM** — nombre d'habitants qui basculent sous le seuil des
-  15 min grâce aux nouvelles haltes, pour objectiver l'apport du projet.
+- **Gain marginal du SERM** nombre d'habitants qui gagnent au moins un niveau
+  de desserte grâce aux nouvelles haltes, pour objectiver l'apport du projet.
 
 Forme de la recommandation visée : *« prioriser [tel aménagement] sur [tel
 secteur], qui ramène le plus d'habitants aujourd'hui mal desservis sous le seuil
@@ -85,7 +106,7 @@ d'accessibilité, au meilleur rapport coût / population atteinte. »*
 
 ## Limites et données manquantes
 
-- **Écart de population** : population fiscale Filosofi 2021 (453 k individus de ménages) inférieure d'environ 8 % à la population municipale 2021 (491 k), différence imputable au champ des ménages fiscaux — hors population des communautés — et dans une moindre mesure aux carreaux imputés et à l'hypothèse de densité uniforme pour les carreaux traversés par la limite de la MRN.
+- **Écart de population** : population fiscale Filosofi 2021 (453 k individus de ménages) inférieure d'environ 8 % à la population municipale 2021 (491 k), différence imputable au champ des ménages fiscaux (hors population des communautés) et dans une moindre mesure aux carreaux imputés et à l'hypothèse de densité uniforme pour les carreaux traversés par la limite de la MRN.
 - **Précision du carroyage** : le carroyage INSEE de 200 m introduit une 
   erreur de localisation comprise entre 0 et 100 m, soit de 0 à 1,2 mn à 
   pied. L'utilisation de la BDNB (Base de Données Nationale des Bâtiments) 
@@ -118,10 +139,10 @@ les besoins de l'observatoire.
 
 ## Auteur
 
-Dominique Rigault — Analyste de données géospatiales  
-[linkedin.com/in/dominique.rigault](https://linkedin.com/in/dominiquerigault) · 
+Dominique Rigault, analyste de données géospatiales  
+[linkedin.com/in/dominiquerigault](https://linkedin.com/in/dominiquerigault) · 
 [github.com/dominique-rigault](https://github.com/dominique-rigault)
 
 ## Licence
 
-Données et code publiés sous licence ouverte — réutilisation libre avec attribution.
+Données et code publiés sous licence ouverte, réutilisation libre avec attribution.
