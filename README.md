@@ -19,9 +19,18 @@ d'adoption a été votée en Conseil métropolitain le 15 décembre 2025.
 
 Le document de cadrage complet est disponible dans [`docs/`](docs/).
 
+**À qui s'adresse l'analyse, et pour décider quoi.** L'accessibilité mesurée
+ici n'est pas une fin en soi : elle supporte les arbitrages de l'autorité
+organisatrice de la mobilité (Métropole Rouen Normandie), des aménageurs et de
+l'observatoire de la mobilité. Concrètement, elle éclaire trois décisions : où
+concentrer le rabattement vers les futures haltes SERM (bus, modes actifs,
+stationnement vélo), quels secteurs habités resteront mal desservis malgré le
+SERM 2030, et comment objectiver l'équité territoriale d'accès au réseau
+structurant.
+
 ## Stack technique
 
-`Python` `GeoPandas` `OSMnx` `PostGIS` `Folium` `QGIS` `Jupyter`
+`Python` `GeoPandas` `OSMnx` `Folium` `QGIS` `Jupyter`
 
 ## Sources de données
 
@@ -54,6 +63,25 @@ mais sont indépendants l'un de l'autre.
 | `06_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle situation actuelle / SERM 2030 | — |
 
 > Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
+
+## Restitution & aide à la décision
+
+Au-delà des cartes d'isochrones, l'analyse est construite pour produire une
+lecture directement actionnable :
+
+- **Part de population desservie (< 15 min), avant / après SERM** — à l'échelle
+  métropolitaine, puis par commune et par type de centralité : l'indicateur
+  d'équité territoriale.
+- **Secteurs habités en déficit d'accès malgré le SERM 2030** — cartographie des
+  zones où se posent les arbitrages de rabattement et d'aménagement.
+- **Gain marginal du SERM** — nombre d'habitants qui basculent sous le seuil des
+  15 min grâce aux nouvelles haltes, pour objectiver l'apport du projet.
+
+Forme de la recommandation visée : *« prioriser [tel aménagement] sur [tel
+secteur], qui ramène le plus d'habitants aujourd'hui mal desservis sous le seuil
+d'accessibilité, au meilleur rapport coût / population atteinte. »*
+
+*(Indicateurs chiffrés à compléter à l'issue des notebooks `03`, `05` et `06`.)*
 
 ## Limites et données manquantes
 
@@ -91,7 +119,7 @@ les besoins de l'observatoire.
 ## Auteur
 
 Dominique Rigault — Analyste de données géospatiales  
-[linkedin.com/in/dominique.rigault](https://linkedin.com/in/dominique.rigault) · 
+[linkedin.com/in/dominique.rigault](https://linkedin.com/in/dominiquerigault) · 
 [github.com/dominique-rigault](https://github.com/dominique-rigault)
 
 ## Licence
