@@ -19,7 +19,7 @@ structurant et non sur le maillage bus. L'indicateur est donc le **meilleur
 niveau de desserte structurante atteignable** à pied ou à vélo, ordonné par
 portée croissante :
 
-`aucun < bus < TEOR < tram < car express < train (SERM)`
+`aucun < bus < TEOR < métro < car express < train (SERM)`
 
 La lecture avant / après mesure le nombre d'habitants dont ce niveau s'élève
 avec le SERM 2030. Les temps de parcours sont restitués en gradient

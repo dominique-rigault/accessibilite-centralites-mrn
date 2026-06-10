@@ -6,6 +6,7 @@ notebooks/util.py
 data/*.gpkg
 data/*.graphml
 data/*.html
+data/*.qgz
 
 # Exception : périmètre MRN (référence stable)
 !data/perimetre_MRN.gpkg
