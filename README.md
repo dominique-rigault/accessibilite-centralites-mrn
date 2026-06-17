@@ -57,7 +57,7 @@ structurant.
 
 - Réseaux viaires piétons et cyclables : OpenStreetMap (OSMnx)
 - Réseaux TC : [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/region/28?subtype=intercity&type=public-transit)
-- Population et logements : INSEE FiLoSoFi carroyé 200 m
+- Population et logements : INSEE Filosofi carroyé 200 m
 - Haltes SERM projetées : délibération du Conseil métropolitain 15/12/2025
 - Armature urbaine :
     Fichier des 71 communes de la MRN avec leur type de centralité.
@@ -119,6 +119,23 @@ d'accessibilité, au meilleur rapport coût / population atteinte. »*
     - analyse multicritères PLUi / PDM / SERM ;
     - horizons SERM pré-LNPN et post-LNPN, à traiter lorsque les données 
       de desserte seront stabilisées.
+- **Rattachement des arrêts au réseau (snap-to-node)** : chaque arrêt est routé
+  depuis le nœud du graphe le plus proche, le tronçon d'approche n'étant ni routé
+  ni décompté du budget-temps. Pour les modes structurants (Métro, TEOR, Train),
+  qui portent l'indicateur, ce rattachement reste sous 70 m dans tous les cas
+  (médiane 15 m à pied, 23 m à vélo ; p95 ≤ 50 m), soit moins d'une minute de
+  parcours — du même ordre que l'imprécision du carroyage. Le maillage bus,
+  hors hiérarchie, présente un arrêt isolé à 460 m, sans incidence sur l'analyse.
+  - **Arrêts sur arêtes longues (zones à habitat dispersé)** : le rattachement au
+  nœud le plus proche (et non à l'arête) atteint sa limite lorsqu'un arrêt se
+  situe au milieu d'une arête OSM longue et non subdivisée, fréquente en secteur
+  rural. L'arrêt est alors routé depuis une extrémité de l'arête : un arrêt de
+  desserte rurale (Le Conihout, Le Mesnil-sous-Jumièges, ligne de bus 206) est
+  ainsi rattaché à 460 m alors que le réseau passe sous l'arrêt. Le cas ne
+  concerne que des arrêts bus isolés en zone peu peuplée, hors hiérarchie
+  structurante : aucune incidence sur l'indicateur. Un *snap-to-edge* (insertion
+  d'un nœud temporaire sur l'arête) corrigerait ce biais résiduel — réservé à une
+  phase ultérieure si un routage fin du réseau bus rural devenait nécessaire.
 
 ## Structure du projet
 ```
