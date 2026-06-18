@@ -9,5 +9,9 @@ data/*.html
 data/*.qgz
 data/*.png
 
+# modèles QGIS
+docs/*.qml
+docs/*.qpt
+
 # Exception : périmètre MRN (référence stable)
 !data/perimetre_MRN.gpkg
