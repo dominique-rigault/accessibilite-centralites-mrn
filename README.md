@@ -78,9 +78,9 @@ mais sont indépendants l'un de l'autre.
 | `00_referentiels.ipynb` | Périmètre administratif de la MRN (géocodage OSM) | `data/perimetre_MRN.gpkg` |
 | `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx), périmètre offre (MRN + tampon 5 km) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
 | `02_arrets_TC.ipynb` | Couche d'arrêts TC 2026 depuis le GTFS ATOUMOD, périmètre offre (MRN + tampon 3,75 km), attribut de niveau de desserte | `data/arrets_2026.gpkg` |
-| `03_isochrones.ipynb` * à venir* | Isochrones piétonnes et cyclables en routage réel depuis les arrêts, niveau de desserte conservé | — |
+| `03_isochrones.ipynb` * en cours* | Isochrones piétonnes et cyclables en routage réel depuis les arrêts (niveau de desserte conservé), et table du meilleur niveau atteignable par nœud x niveau du réseau | `data/isochrones_2026.gpkg` + `data/acces_noeuds_2026.gpkg`|
 | `04_logements.ipynb` | Couche de population localisée (Filosofi 200 m, découpe MRN stricte) | `data/population_carreaux_MRN.gpkg` |
-| `05_jointure_logements_isochrones.ipynb` *— à venir* | Jointure spatiale population ↔ isochrones, meilleur niveau de desserte atteignable par carreau | — |
+| `05_logements_accessibilite.ipynb` *— à venir* | Rattachement des carreaux de population au réseau (snap-to-edge) et lecture du meilleur niveau de desserte atteignable par carreau | `data/population_accessibilite_MRN.gpkg` |
 | `06_comparaison_avant_apres.ipynb` *— à venir* | Vue différentielle 2026 / SERM 2030 : habitants gagnant un niveau de desserte | — |
 
 > Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
