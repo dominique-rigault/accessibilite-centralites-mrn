@@ -86,7 +86,7 @@ population (`04`) sont identiques pour les deux horizons ; seuls les arrêts
 | `00_referentiels.ipynb` | Périmètre administratif de la MRN (géocodage OSM) | `data/perimetre_MRN.gpkg` |
 | `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx), périmètre offre (MRN + tampon 5 km) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
 | `02_arrets_TC.ipynb` | Couches d'arrêts : situation actuelle depuis le GTFS ATOUMOD, puis réseau cible SERM par overlay (haltes ferroviaires post-LNPN, car express, nouveaux arrêts TEOR, géolocalisés manuellement). Périmètre offre (MRN + tampon 3,75 km), attribut de niveau de desserte | `data/arrets_2026.gpkg` + `data/arrets_SERM.gpkg` |
-| `03_isochrones.ipynb` | Isochrones piétonnes et cyclables en routage réel depuis les arrêts (niveau de desserte conservé), et table du meilleur niveau atteignable par nœud. Traitement paramétré par horizon, exécuté pour la situation actuelle et le réseau cible | `data/isochrones_{2026,SERM}.gpkg` + `data/acces_noeuds_{2026,SERM}.gpkg` |
+| `03_isochrones.ipynb` | Isochrones piétonnes et cyclables en routage réel depuis les arrêts (niveau de desserte conservé), et table du meilleur niveau atteignable par nœud (niveau de desserte et temps d'accès). Traitement paramétré par horizon, exécuté pour la situation actuelle et le réseau cible | `data/isochrones_{2026,SERM}.gpkg` + `data/acces_noeuds_{2026,SERM}.gpkg` |
 | `04_logements.ipynb` | Couche de population localisée (Filosofi 200 m, découpe MRN stricte) | `data/population_carreaux_MRN.gpkg` |
 | `05_logements_accessibilite.ipynb` *en cours* | Rattachement des carreaux de population au réseau (snap-to-edge) et lecture du meilleur niveau de desserte atteignable par carreau, pour les deux horizons (`niveau_actuel`, `niveau_cible`) | `data/population_accessibilite_MRN.gpkg` |
 | `06_comparaison_avant_apres.ipynb` *à venir* | Vue différentielle situation actuelle / réseau cible SERM : habitants gagnant un niveau de desserte | — |
@@ -151,9 +151,22 @@ d'accessibilité, au meilleur rapport coût / population atteinte. »*
   desserte rurale (Le Conihout, Le Mesnil-sous-Jumièges, ligne de bus 206) est
   ainsi rattaché à 460 m alors que le réseau passe sous l'arrêt. Le cas ne
   concerne que des arrêts bus isolés en zone peu peuplée, hors hiérarchie
-  structurante : aucune incidence sur l'indicateur. Un *snap-to-edge* (insertion
-  d'un nœud temporaire sur l'arête) corrigerait ce biais résiduel — réservé à une
-  phase ultérieure si un routage fin du réseau bus rural devenait nécessaire.
+  structurante : aucune incidence sur l'indicateur, et le *snap-to-node* est donc
+  conservé pour les arrêts (nb03). Le rattachement des **carreaux de population**
+  au réseau (nb05) adopte en revanche un *snap-to-edge* — projection sur l'arête,
+  non sur le nœud le plus proche — précisément parce que les carreaux sont bien
+  plus nombreux que les arrêts et tombent fréquemment sur ces longues arêtes
+  rurales ; le tronçon d'approche y est alors décompté du budget-temps (cf. point
+  suivant).
+- **Rattachement des carreaux au réseau (snap-to-edge, nb05)** : chaque carreau
+  est rattaché par son point représentatif (`representative_point`, garanti
+  intérieur y compris pour les carreaux tronqués en limite de MRN) à l'arête la
+  plus proche ; le meilleur niveau atteignable est lu via les deux nœuds extrémités
+  de l'arête, le tronçon d'approche le long de l'arête étant décompté du
+  budget-temps (15 min) grâce au temps d'accès continu porté par `acces_noeuds`
+  (nb03). Subsiste un biais résiduel de rattachement, du même ordre que
+  l'imprécision du carroyage, et — pour les carreaux de bord — l'hypothèse de
+  densité uniforme déjà signalée à l'écart de population.
 
 ## Structure du projet
 ```
