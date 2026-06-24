@@ -88,7 +88,7 @@ population (`04`) sont identiques pour les deux horizons ; seuls les arrêts
 | `02_arrets_TC.ipynb` | Couches d'arrêts : situation actuelle depuis le GTFS ATOUMOD, puis réseau cible SERM par overlay (haltes ferroviaires post-LNPN, car express, nouveaux arrêts TEOR, géolocalisés manuellement). Périmètre offre (MRN + tampon 3,75 km), attribut de niveau de desserte | `data/arrets_2026.gpkg` + `data/arrets_SERM.gpkg` |
 | `03_isochrones.ipynb` | Isochrones piétonnes et cyclables en routage réel depuis les arrêts (niveau de desserte conservé), et table du meilleur niveau atteignable par nœud (niveau de desserte et temps d'accès). Traitement paramétré par horizon, exécuté pour la situation actuelle et le réseau cible | `data/isochrones_{2026,SERM}.gpkg` + `data/acces_noeuds_{2026,SERM}.gpkg` |
 | `04_logements.ipynb` | Couche de population localisée (Filosofi 200 m, découpe MRN stricte) | `data/population_carreaux_MRN.gpkg` |
-| `05_logements_accessibilite.ipynb` *en cours* | Rattachement des carreaux de population au réseau (snap-to-edge) et lecture du meilleur niveau de desserte atteignable par carreau, pour les deux horizons (`niveau_actuel`, `niveau_cible`) | `data/population_accessibilite_MRN.gpkg` |
+| `05_logements_accessibilite.ipynb` | Rattachement des carreaux de population au réseau (snap-to-edge), lecture du meilleur niveau de desserte atteignable par carreau pour les deux horizons (`niveau_actuel`, `niveau_cible`), agrégats de population pondérés | `data/population_accessibilite_MRN.gpkg` |
 | `06_comparaison_avant_apres.ipynb` *à venir* | Vue différentielle situation actuelle / réseau cible SERM : habitants gagnant un niveau de desserte | — |
 
 > Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
@@ -110,7 +110,9 @@ Forme de la recommandation visée : *« prioriser [tel aménagement] sur [tel
 secteur], qui ramène le plus d'habitants aujourd'hui mal desservis sous le seuil
 d'accessibilité, au meilleur rapport coût / population atteinte. »*
 
-*(Indicateurs chiffrés à compléter à l'issue des notebooks `03`, `05` et `06`.)*
+**Indicateurs nb05 (situation 2026 / réseau cible SERM, population Filosofi 453 k hab.) :**
+à pied, 30,3 % de la population MRN gagne au moins un niveau de desserte structurante grâce au réseau cible SERM ; à vélo, 32,3 %.
+*(Agrégats par commune et par type de centralité, et indicateurs nb06, à compléter.)*
 
 ## Limites et données manquantes
 
@@ -167,6 +169,29 @@ d'accessibilité, au meilleur rapport coût / population atteinte. »*
   (nb03). Subsiste un biais résiduel de rattachement, du même ordre que
   l'imprécision du carroyage, et — pour les carreaux de bord — l'hypothèse de
   densité uniforme déjà signalée à l'écart de population.
+- **Correction du tronçon d'approche (nb05)** : le temps de parcours entre le
+  point représentatif d'un carreau et le nœud extrémité de l'arête snappée est
+  estimé depuis la distance orthogonale de snap, qui est une borne inférieure de
+  la distance curviligne réelle jusqu'à `u` ou `v`. La correction est donc
+  légèrement optimiste — elle sous-estime marginalement le tronçon d'approche,
+  de façon cohérente avec la précision du carroyage.
+- **Densité uniforme sur les carreaux de bordure (nb05)** : les carreaux tronqués
+  par la limite de la MRN voient leur population pondérée au prorata de la surface
+  conservée (`ind_pond = ind × frac`), sous hypothèse de densité uniforme à
+  l'intérieur du carreau. Cette hypothèse introduit une erreur systématique pour
+  les carreaux dont la population est concentrée dans la partie exclue (ex. :
+  bourg en limite de MRN).
+- **Validation croisée point-dans-polygone (nb05)** : la concordance entre le
+  snap-to-edge et la méthode point-dans-polygone contre `isochrones_2026` est de
+  74,6 %. Les 25,4 % de divergences sont quasi-exclusivement des carreaux dont le
+  point représentatif est à plus de 50 m de toute arête atteinte — `TAMPON_ISO`
+  étant un paramètre cartographique, non analytique. Ces divergences confirment la
+  supériorité du snap-to-edge sur le point-dans-polygone pour les carreaux éloignés
+  des arêtes.
+- **Colonnes parasites dans `population_carreaux_MRN.gpkg`** : le fichier produit
+  par nb04 contient des colonnes issues du géocodage OSMnx (`bbox_west`, `place_id`,
+  `display_name`, etc.), sans incidence analytique mais à supprimer dans une
+  prochaine version de nb04.
 
 ## Structure du projet
 ```
