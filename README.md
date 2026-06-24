@@ -188,10 +188,7 @@ d'accessibilité, au meilleur rapport coût / population atteinte. »*
   étant un paramètre cartographique, non analytique. Ces divergences confirment la
   supériorité du snap-to-edge sur le point-dans-polygone pour les carreaux éloignés
   des arêtes.
-- **Colonnes parasites dans `population_carreaux_MRN.gpkg`** : le fichier produit
-  par nb04 contient des colonnes issues du géocodage OSMnx (`bbox_west`, `place_id`,
-  `display_name`, etc.), sans incidence analytique mais à supprimer dans une
-  prochaine version de nb04.
+  **Traversées de bac exclues du réseau viaire** Les bacs sur la Seine (Duclair, Jumièges, La Bouille, Sahurs, Mesnil-sous-Jumièges) constituent des liaisons physiques inter-rives mais ne sont pas modélisés comme arêtes dans les graphes piéton et vélo. Deux raisons : leur fréquence horaire, discontinue et non alignée sur celle des lignes TC qu'ils permettent d'atteindre, introduirait un temps d'attente variable incompatible avec l'hypothèse de déplacement continu retenue dans le pipeline ; et leur temps de traversée (5 min de trajet, auxquels s'ajoutent embarquement et débarquement) est négligeable devant le budget de 15 min, ce qui en ferait une arête à fort impact topologique pour un gain de temps modeste. L'accessibilité des secteurs riverains de la Seine est donc légèrement sous-estimée pour les habitants situés à moins de 15 min d'un embarcadère.
 
 ## Structure du projet
 ```

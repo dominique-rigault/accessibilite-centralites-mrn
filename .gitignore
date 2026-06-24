@@ -4,6 +4,8 @@ notebooks/util.py
 
 # Données traitées — régénérables par les notebooks
 data/*.gpkg
+data/*.gpkg-shm
+data/*.gpkg-wal
 data/*.graphml
 data/*.html
 data/*.qgz
