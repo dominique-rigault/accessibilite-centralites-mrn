@@ -7,9 +7,7 @@ data/*.gpkg
 data/*.gpkg-shm
 data/*.gpkg-wal
 data/*.graphml
-data/*.html
 data/*.qgz
-data/*.png
 
 # modèles QGIS
 docs/*.qml
