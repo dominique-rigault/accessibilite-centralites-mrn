@@ -1,0 +1,10 @@
+geopandas>=0.14
+osmnx>=1.9
+networkx>=3.2
+pandas>=2.1
+numpy>=1.26
+folium>=0.15
+shapely>=2.0
+openpyxl>=3.1
+scipy>=1.11
+jupyter

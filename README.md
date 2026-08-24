@@ -1,5 +1,5 @@
 # Accessibilité bas carbone aux centralités
-## Métropole Rouen Normandie — Impact du SERM
+## Métropole Rouen Normandie · Impact du SERM
 
 Analyse de l'accessibilité piétonne et cyclable aux réseaux de transports 
 en commun structurants, comparée entre la situation actuelle et le réseau 
@@ -10,14 +10,14 @@ cible du Service Express Régional Métropolitain (SERM).
 > Pour chaque lieu d'habitation, quel est le meilleur niveau de desserte 
 > en transport en commun structurant atteignable en moins de 15 minutes 
 > à pied ou à vélo, et quelle part de la population voit ce niveau s'élever 
-> avec le réseau cible SERM ?
+> avec le réseau cible SERM ?
 
 **Indicateur retenu.** L'accès binaire à un arrêt *quelconque* est saturé à
 l'échelle de l'agglomération (presque tout habitant est à moins de 15 min d'un
-arrêt) : il ne mesure pas ce que change le SERM, qui agit sur le réseau
+arrêt) : il ne mesure pas ce que change le SERM, qui agit sur le réseau
 structurant et non sur le maillage bus. L'indicateur est donc le **meilleur
 niveau de desserte structurante atteignable** à pied ou à vélo, ordonné par
-portée croissante :
+portée croissante :
 
 `aucun < bus < TEOR < métro < car express < train`
 
@@ -26,7 +26,7 @@ avec le réseau cible SERM. Les temps de parcours sont restitués en gradient
 (5 / 10 / 15 min) plutôt qu'à un seuil unique. Le bac, structurant sur son seul
 corridor et marginal en population, est exclu de la hiérarchie.
 
-**Périmètres d'analyse.** Deux périmètres sont distingués : l'*offre* (réseaux
+**Périmètres d'analyse.** Deux périmètres sont distingués : l'*offre* (réseaux
 viaires + arrêts) est étendue à la MRN augmentée d'un tampon +3 750 m pour les
 arrêts (15 min à vélo), +5 000 m pour les graphes viaires, afin de capter les
 arrêts hors MRN plus proches d'un habitant qu'un arrêt interne; la *demande*
@@ -36,19 +36,19 @@ arrêts hors MRN plus proches d'un habitant qu'un arrêt interne; la *demande*
 
 Ce projet s'inscrit en cohérence avec le Plan de Mobilité (PDM) de la 
 Métropole Rouen Normandie et avec le réseau cible du SERM, dont la 
-préfiguration — confiée à la Société des Grands Projets — a été engagée en 
+préfiguration (confiée à la Société des Grands Projets) a été engagée en 
 septembre 2024. À la date de l'analyse, le réseau cible (volet ferroviaire et 
 car express) est défini dans les documents techniques publics, dont la 
 délibération du Conseil métropolitain du 15 décembre 2025, mais son phasage 
-opérationnel n'est pas arrêté : l'analyse retient donc le réseau cible complet 
+opérationnel n'est pas arrêté : l'analyse retient donc le réseau cible complet 
 comme terme de comparaison, et non un état daté.
 
 Le document de cadrage complet est disponible dans [`docs/`](docs/).
 
 **À qui s'adresse l'analyse, et pour décider quoi.** L'accessibilité mesurée
-ici n'est pas une fin en soi : elle supporte les arbitrages de l'autorité
+ici n'est pas une fin en soi : elle supporte les arbitrages de l'autorité
 organisatrice de la mobilité (Métropole Rouen Normandie), des aménageurs et de
-l'observatoire de la mobilité. Concrètement, elle éclaire trois décisions : où
+l'observatoire de la mobilité. Concrètement, elle éclaire trois décisions : où
 concentrer le rabattement vers les futures haltes SERM (bus, modes actifs,
 stationnement vélo), quels secteurs habités resteront mal desservis malgré le
 réseau cible SERM, et comment objectiver l'équité territoriale d'accès au réseau
@@ -60,24 +60,73 @@ structurant.
 
 ## Sources de données
 
-- Réseaux viaires piétons et cyclables : OpenStreetMap (OSMnx)
-- Réseaux TC : [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/region/28?subtype=intercity&type=public-transit)
-- Population et logements : INSEE Filosofi carroyé 200 m
-- Haltes du réseau cible SERM (ferroviaire post-LNPN, car express) : délibération du Conseil métropolitain 15/12/2025 et schémas de préfiguration
-- Armature urbaine :
+- Réseaux viaires piétons et cyclables : OpenStreetMap (OSMnx)
+- Réseaux TC : [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/region/28?subtype=intercity&type=public-transit)
+- Population et logements : INSEE Filosofi carroyé 200 m
+- Haltes du réseau cible SERM (ferroviaire post-LNPN, car express) : délibération du Conseil métropolitain 15/12/2025 et schémas de préfiguration
+- Armature urbaine :
     Fichier des 71 communes de la MRN avec leur type de centralité.
-    **Sources** :
-    Liste des communes : [COG data.gouv.fr](https://www.data.gouv.fr/datasets/code-officiel-geographique-cog)
-    Types de centralité : PAS Métropole Rouen Normandie 2050, carte n°4
-    **Méthode** : enrichissement manuel du COG
+    **Sources** :
+    Liste des communes : [COG data.gouv.fr](https://www.data.gouv.fr/datasets/code-officiel-geographique-cog)
+    Types de centralité : PAS Métropole Rouen Normandie 2050, carte n°4
+    **Méthode** : enrichissement manuel du COG
     Ce fichier ne peut pas être régénéré automatiquement.
+
+## Installation et exécution
+
+**Prérequis** : Python 3.11 ou supérieur, un environnement virtuel dédié
+(`venv` ou `conda`), une connexion internet (API Nominatim / OpenStreetMap,
+notebook `00`).
+
+1. **Cloner le dépôt et installer les dépendances** :
+   ```bash
+   git clone https://github.com/dominique-rigault/accessibilite-centralites-mrn.git
+   cd accessibilite-centralites-mrn
+   python -m venv .venv
+   ```
+   Activation de l'environnement virtuel, selon la plateforme :
+   ```bash
+   # macOS / Linux
+   source .venv/bin/activate
+   ```
+   ```powershell
+   # Windows (PowerShell)
+   .venv\Scripts\Activate.ps1
+   ```
+   Puis, dans tous les cas :
+   ```bash
+   pip install -e .
+   ```
+   L'installation en mode éditable (`-e .`) rend le package `src/` importable
+   depuis les notebooks, quel que soit le répertoire de travail effectif de
+   Jupyter ou de l'éditeur utilisé.
+
+2. **Placer les données brutes non versionnées** dans `raw/` :
+
+   | Fichier | Source |
+   |---|---|
+   | `atoumod-gtfs_20260512/` (dossier GTFS) | [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets/region/28?subtype=intercity&type=public-transit) |
+   | `Filosofi2021_carreaux_200m_csv.zip` | [INSEE Filosofi carroyé 200 m](https://www.insee.fr/fr/statistiques/7655475) |
+
+   Et dans `data/` :
+
+   | Fichier | Source |
+   |---|---|
+   | `armature_urbaine.csv` | Enrichissement manuel du COG (types de centralité, PAS Métropole Rouen Normandie 2050 carte n°4), ne peut pas être régénéré automatiquement |
+   | `Arrets_SERM.xlsx` | Géolocalisation manuelle des haltes SERM depuis la délibération du Conseil métropolitain du 15/12/2025 et les schémas de préfiguration, ne peut pas être régénéré automatiquement |
+
+   Les autres fichiers de `data/` sont produits par la chaîne elle-même.
+
+3. **Exécuter les notebooks dans l'ordre du tableau ci-dessous.** Le notebook
+   `03` est paramétré par `HORIZON` (`"2026"` puis `"SERM"`) : l'exécuter une
+   fois pour chaque valeur avant de lancer `05`.
 
 ## Pipeline analytique
 
 Traitements organisés en notebooks numérotés, à exécuter dans l'ordre.
-`00` produit les référentiels transversaux ; `01` et `02` en dépendent
+`00` produit les référentiels transversaux; `01` et `02` en dépendent
 mais sont indépendants l'un de l'autre. Les graphes viaires (`01`) et la
-population (`04`) sont identiques pour les deux horizons ; seuls les arrêts
+population (`04`) sont identiques pour les deux horizons; seuls les arrêts
 (`02`) et les isochrones / atteignabilité (`03`) sont déclinés par horizon
 (situation actuelle, réseau cible SERM).
 
@@ -85,118 +134,121 @@ population (`04`) sont identiques pour les deux horizons ; seuls les arrêts
 |----------|------|-------------------|
 | `00_referentiels.ipynb` | Périmètre administratif de la MRN (géocodage OSM) | `data/perimetre_MRN.gpkg` |
 | `01_acquisition_donnees_OSM.ipynb` | Réseaux viaires piéton et cyclable (OSMnx), périmètre offre (MRN + tampon 5 km) | `data/reseau_{pieton,velo}_MRN.gpkg` + `.graphml` |
-| `02_arrets_TC.ipynb` | Couches d'arrêts : situation actuelle depuis le GTFS ATOUMOD, puis réseau cible SERM par overlay (haltes ferroviaires post-LNPN, car express, nouveaux arrêts TEOR, géolocalisés manuellement). Périmètre offre (MRN + tampon 3,75 km), attribut de niveau de desserte | `data/arrets_2026.gpkg` + `data/arrets_SERM.gpkg` |
+| `02_arrets_TC.ipynb` | Couches d'arrêts : situation actuelle depuis le GTFS ATOUMOD, puis réseau cible SERM par overlay (haltes ferroviaires post-LNPN, car express, nouveaux arrêts TEOR, géolocalisés manuellement). Périmètre offre (MRN + tampon 3,75 km), attribut de niveau de desserte | `data/arrets_2026.gpkg` + `data/arrets_SERM.gpkg` |
 | `03_isochrones.ipynb` | Isochrones piétonnes et cyclables en routage réel depuis les arrêts (niveau de desserte conservé), et table du meilleur niveau atteignable par nœud (niveau de desserte et temps d'accès). Traitement paramétré par horizon, exécuté pour la situation actuelle et le réseau cible | `data/isochrones_{2026,SERM}.gpkg` + `data/acces_noeuds_{2026,SERM}.gpkg` |
 | `04_logements.ipynb` | Couche de population localisée (Filosofi 200 m, découpe MRN stricte) | `data/population_carreaux_MRN.gpkg` |
 | `05_logements_accessibilite.ipynb` | Rattachement des carreaux de population au réseau (snap-to-edge), lecture du meilleur niveau de desserte atteignable par carreau pour les deux horizons (`niveau_actuel`, `niveau_cible`), agrégats de population pondérés | `data/population_accessibilite_MRN.gpkg` |
-| `06_comparaison_avant_apres.ipynb` *à venir* | Vue différentielle situation actuelle / réseau cible SERM : habitants gagnant un niveau de desserte | — |
+| `06_comparaison_avant_apres.ipynb` *à venir* | Vue différentielle situation actuelle / réseau cible SERM : habitants gagnant un niveau de desserte | · |
 
 > Chaque notebook documente en tête ses prérequis, entrées et sorties détaillés.
 
 ## Restitution & aide à la décision
 
 Au-delà des cartes d'isochrones, l'analyse est construite pour produire une
-lecture directement actionnable :
+lecture directement actionnable :
 
 - **Part de population atteignant une desserte structurante (< 15 min), et
   niveau atteint, avant / après SERM** à l'échelle métropolitaine, puis par
-  commune et par type de centralité : l'indicateur d'équité territoriale.
+  commune et par type de centralité : l'indicateur d'équité territoriale.
 - **Secteurs habités en déficit d'accès malgré le réseau cible SERM** cartographie des
   zones où se posent les arbitrages de rabattement et d'aménagement.
 - **Gain marginal du SERM** nombre d'habitants qui gagnent au moins un niveau
   de desserte grâce aux nouvelles haltes, pour objectiver l'apport du projet.
 
-Forme de la recommandation visée : *« prioriser [tel aménagement] sur [tel
+Forme de la recommandation visée : *« prioriser [tel aménagement] sur [tel
 secteur], qui ramène le plus d'habitants aujourd'hui mal desservis sous le seuil
 d'accessibilité, au meilleur rapport coût / population atteinte. »*
 
-**Indicateurs nb05 (situation 2026 / réseau cible SERM, population Filosofi 453 k hab.) :**
-à pied, 30,3 % de la population MRN gagne au moins un niveau de desserte structurante grâce au réseau cible SERM ; à vélo, 32,3 %.
+**Indicateurs nb05 (situation 2026 / réseau cible SERM, population Filosofi 453 k hab.) :**
+à pied, 30,3 % de la population MRN gagne au moins un niveau de desserte structurante grâce au réseau cible SERM; à vélo, 32,3 %.
 *(Agrégats par commune et par type de centralité, et indicateurs nb06, à compléter.)*
 
 ## Limites et données manquantes
 
-- **Écart de population** : population fiscale Filosofi 2021 (453 k individus de ménages) inférieure d'environ 8 % à la population municipale 2021 (491 k), différence imputable au champ des ménages fiscaux (hors population des communautés) et dans une moindre mesure aux carreaux imputés et à l'hypothèse de densité uniforme pour les carreaux traversés par la limite de la MRN.
-- **Précision du carroyage** : le carroyage INSEE de 200 m introduit une 
+- **Écart de population** : population fiscale Filosofi 2021 (453 k individus de ménages) inférieure d'environ 8 % à la population municipale 2021 (491 k), différence imputable au champ des ménages fiscaux (hors population des communautés) et dans une moindre mesure aux carreaux imputés et à l'hypothèse de densité uniforme pour les carreaux traversés par la limite de la MRN.
+- **Précision du carroyage** : le carroyage INSEE de 200 m introduit une 
   erreur de localisation comprise entre 0 et 100 m, soit de 0 à 1,2 mn à 
   pied. L'utilisation de la BDNB (Base de Données Nationale des Bâtiments) 
   permettrait de réduire cette marge en localisant la population au bâtiment.
-- **Horizon de comparaison** : le terme de comparaison est le réseau cible
+- **Horizon de comparaison** : le terme de comparaison est le réseau cible
   complet du SERM, dont le volet ferroviaire est conditionné par la LNPN
   (horizon dépassant 2030). L'analyse mesure l'effet du réseau *à terme*,
-  indépendamment de son calendrier de déploiement — non arrêté à ce stade de
+  indépendamment de son calendrier de déploiement, non arrêté à ce stade de
   la préfiguration. Le réseau viaire et la population sont maintenus identiques
-  entre les deux horizons ; l'effet SERM est porté uniquement par les arrêts
+  entre les deux horizons; l'effet SERM est porté uniquement par les arrêts
   structurants (les extensions cyclables programmées ne sont pas modélisées en
   Phase 1).
-- **Haltes du réseau cible SERM** : en l'absence de couche SIG officielle à ce stade, 
+- **Haltes du réseau cible SERM** : en l'absence de couche SIG officielle à ce stade, 
   les coordonnées des haltes projetées sont géolocalisées manuellement à 
   partir des documents techniques publics (délibération du 15/12/2025, schémas 
   de préfiguration).
-- **Périmètre exclu (extensions ultérieures)** :
-    - routage depuis les lieux de travail (base SIRENE) ;
-    - analyse multicritères PLUi / PDM / SERM ;
+- **Périmètre exclu (extensions ultérieures)** :
+    - routage depuis les lieux de travail (base SIRENE);
+    - analyse multicritères PLUi / PDM / SERM;
     - découpage du réseau cible en jalons datés (états intermédiaires, p. ex. 
       pré-LNPN), à traiter lorsque le calendrier de mise en service sera 
       stabilisé.
-- **Rattachement des arrêts au réseau (snap-to-node)** : chaque arrêt est routé
+- **Rattachement des arrêts au réseau (snap-to-node)** : chaque arrêt est routé
   depuis le nœud du graphe le plus proche, le tronçon d'approche n'étant ni routé
   ni décompté du budget-temps. Pour les modes structurants (Métro, TEOR, Train),
   qui portent l'indicateur, ce rattachement reste sous 70 m dans tous les cas
-  (médiane 15 m à pied, 23 m à vélo ; p95 ≤ 50 m), soit moins d'une minute de
-  parcours — du même ordre que l'imprécision du carroyage. Le maillage bus,
+  (médiane 15 m à pied, 23 m à vélo; p95 ≤ 50 m), soit moins d'une minute de
+  parcours, du même ordre que l'imprécision du carroyage. Le maillage bus,
   hors hiérarchie, présente un arrêt isolé à 460 m, sans incidence sur l'analyse.
-  - **Arrêts sur arêtes longues (zones à habitat dispersé)** : le rattachement au
+  - **Arrêts sur arêtes longues (zones à habitat dispersé)** : le rattachement au
   nœud le plus proche (et non à l'arête) atteint sa limite lorsqu'un arrêt se
   situe au milieu d'une arête OSM longue et non subdivisée, fréquente en secteur
-  rural. L'arrêt est alors routé depuis une extrémité de l'arête : un arrêt de
+  rural. L'arrêt est alors routé depuis une extrémité de l'arête : un arrêt de
   desserte rurale (Le Conihout, Le Mesnil-sous-Jumièges, ligne de bus 206) est
   ainsi rattaché à 460 m alors que le réseau passe sous l'arrêt. Le cas ne
   concerne que des arrêts bus isolés en zone peu peuplée, hors hiérarchie
-  structurante : aucune incidence sur l'indicateur, et le *snap-to-node* est donc
+  structurante : aucune incidence sur l'indicateur, et le *snap-to-node* est donc
   conservé pour les arrêts (nb03). Le rattachement des **carreaux de population**
-  au réseau (nb05) adopte en revanche un *snap-to-edge* — projection sur l'arête,
-  non sur le nœud le plus proche — précisément parce que les carreaux sont bien
+  au réseau (nb05) adopte en revanche un *snap-to-edge* (projection sur l'arête,
+  non sur le nœud le plus proche) précisément parce que les carreaux sont bien
   plus nombreux que les arrêts et tombent fréquemment sur ces longues arêtes
-  rurales ; le tronçon d'approche y est alors décompté du budget-temps (cf. point
+  rurales; le tronçon d'approche y est alors décompté du budget-temps (cf. point
   suivant).
-- **Rattachement des carreaux au réseau (snap-to-edge, nb05)** : chaque carreau
+- **Rattachement des carreaux au réseau (snap-to-edge, nb05)** : chaque carreau
   est rattaché par son point représentatif (`representative_point`, garanti
   intérieur y compris pour les carreaux tronqués en limite de MRN) à l'arête la
-  plus proche ; le meilleur niveau atteignable est lu via les deux nœuds extrémités
+  plus proche; le meilleur niveau atteignable est lu via les deux nœuds extrémités
   de l'arête, le tronçon d'approche le long de l'arête étant décompté du
   budget-temps (15 min) grâce au temps d'accès continu porté par `acces_noeuds`
   (nb03). Subsiste un biais résiduel de rattachement, du même ordre que
-  l'imprécision du carroyage, et — pour les carreaux de bord — l'hypothèse de
+  l'imprécision du carroyage et, pour les carreaux de bord, l'hypothèse de
   densité uniforme déjà signalée à l'écart de population.
-- **Correction du tronçon d'approche (nb05)** : le temps de parcours entre le
+- **Correction du tronçon d'approche (nb05)** : le temps de parcours entre le
   point représentatif d'un carreau et le nœud extrémité de l'arête snappée est
   estimé depuis la distance orthogonale de snap, qui est une borne inférieure de
   la distance curviligne réelle jusqu'à `u` ou `v`. La correction est donc
-  légèrement optimiste — elle sous-estime marginalement le tronçon d'approche,
+  légèrement optimiste : elle sous-estime marginalement le tronçon d'approche,
   de façon cohérente avec la précision du carroyage.
-- **Densité uniforme sur les carreaux de bordure (nb05)** : les carreaux tronqués
+- **Densité uniforme sur les carreaux de bordure (nb05)** : les carreaux tronqués
   par la limite de la MRN voient leur population pondérée au prorata de la surface
   conservée (`ind_pond = ind × frac`), sous hypothèse de densité uniforme à
   l'intérieur du carreau. Cette hypothèse introduit une erreur systématique pour
-  les carreaux dont la population est concentrée dans la partie exclue (ex. :
+  les carreaux dont la population est concentrée dans la partie exclue (ex. :
   bourg en limite de MRN).
-- **Validation croisée point-dans-polygone (nb05)** : la concordance entre le
+- **Validation croisée point-dans-polygone (nb05)** : la concordance entre le
   snap-to-edge et la méthode point-dans-polygone contre `isochrones_2026` est de
   74,6 %. Les 25,4 % de divergences sont quasi-exclusivement des carreaux dont le
-  point représentatif est à plus de 50 m de toute arête atteinte — `TAMPON_ISO`
-  étant un paramètre cartographique, non analytique. Ces divergences confirment la
+  point représentatif est à plus de 50 m de toute arête atteinte (`TAMPON_ISO`
+  étant un paramètre cartographique, non analytique). Ces divergences confirment la
   supériorité du snap-to-edge sur le point-dans-polygone pour les carreaux éloignés
   des arêtes.
-  **Traversées de bac exclues du réseau viaire** Les bacs sur la Seine (Duclair, Jumièges, La Bouille, Sahurs, Mesnil-sous-Jumièges) constituent des liaisons physiques inter-rives mais ne sont pas modélisés comme arêtes dans les graphes piéton et vélo. Deux raisons : leur fréquence horaire, discontinue et non alignée sur celle des lignes TC qu'ils permettent d'atteindre, introduirait un temps d'attente variable incompatible avec l'hypothèse de déplacement continu retenue dans le pipeline ; et leur temps de traversée (5 min de trajet, auxquels s'ajoutent embarquement et débarquement) est négligeable devant le budget de 15 min, ce qui en ferait une arête à fort impact topologique pour un gain de temps modeste. L'accessibilité des secteurs riverains de la Seine est donc légèrement sous-estimée pour les habitants situés à moins de 15 min d'un embarcadère.
+  **Traversées de bac exclues du réseau viaire** Les bacs sur la Seine (Duclair, Jumièges, La Bouille, Sahurs, Mesnil-sous-Jumièges) constituent des liaisons physiques inter-rives mais ne sont pas modélisés comme arêtes dans les graphes piéton et vélo. Deux raisons : leur fréquence horaire, discontinue et non alignée sur celle des lignes TC qu'ils permettent d'atteindre, introduirait un temps d'attente variable incompatible avec l'hypothèse de déplacement continu retenue dans le pipeline; et leur temps de traversée (5 min de trajet, auxquels s'ajoutent embarquement et débarquement) est négligeable devant le budget de 15 min, ce qui en ferait une arête à fort impact topologique pour un gain de temps modeste. L'accessibilité des secteurs riverains de la Seine est donc légèrement sous-estimée pour les habitants situés à moins de 15 min d'un embarcadère.
 
 ## Structure du projet
 ```
+├── src/              # Code partagé (chemins, paramètres, calculs d'accessibilité)
 ├── notebooks/        # Analyses et traitements
 ├── docs/             # Document de cadrage
 ├── data/             # Données traitées (non versionnées)
 ├── raw/              # Données brutes (non versionnées)
-└── cache/            # Cache OSMnx (non versionné)
+├── cache/            # Cache OSMnx (non versionné)
+├── pyproject.toml    # Dépendances et installation éditable (`pip install -e .`)
+└── requirements.txt  # Miroir des dépendances pour `pip install -r`
 ```
 
 ## Partenariats institutionnels envisagés
