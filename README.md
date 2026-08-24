@@ -5,6 +5,13 @@ Analyse de l'accessibilité piétonne et cyclable aux réseaux de transports
 en commun structurants, comparée entre la situation actuelle et le réseau 
 cible du Service Express Régional Métropolitain (SERM).
 
+> **Statut du projet.** Analyse personnelle menée pour démontrer une
+> méthode, à l'appui de futures missions du même type; non commanditée par
+> la Métropole Rouen Normandie ni par la Société des Grands Projets, dont
+> les données publiques servent ici de cas d'application. La méthode est
+> détaillée dans [`docs/methode.md`](docs/methode.md), rédigée pour rester
+> transposable à un autre territoire.
+
 ## Question analytique
 
 > Pour chaque lieu d'habitation, quel est le meilleur niveau de desserte 
@@ -163,81 +170,57 @@ d'accessibilité, au meilleur rapport coût / population atteinte. »*
 à pied, 30,3 % de la population MRN gagne au moins un niveau de desserte structurante grâce au réseau cible SERM; à vélo, 32,3 %.
 *(Agrégats par commune et par type de centralité, et indicateurs nb06, à compléter.)*
 
-## Limites et données manquantes
+## Limites et domaine de validité
 
-- **Écart de population** : population fiscale Filosofi 2021 (453 k individus de ménages) inférieure d'environ 8 % à la population municipale 2021 (491 k), différence imputable au champ des ménages fiscaux (hors population des communautés) et dans une moindre mesure aux carreaux imputés et à l'hypothèse de densité uniforme pour les carreaux traversés par la limite de la MRN.
-- **Précision du carroyage** : le carroyage INSEE de 200 m introduit une 
-  erreur de localisation comprise entre 0 et 100 m, soit de 0 à 1,2 mn à 
-  pied. L'utilisation de la BDNB (Base de Données Nationale des Bâtiments) 
-  permettrait de réduire cette marge en localisant la population au bâtiment.
-- **Horizon de comparaison** : le terme de comparaison est le réseau cible
-  complet du SERM, dont le volet ferroviaire est conditionné par la LNPN
-  (horizon dépassant 2030). L'analyse mesure l'effet du réseau *à terme*,
-  indépendamment de son calendrier de déploiement, non arrêté à ce stade de
-  la préfiguration. Le réseau viaire et la population sont maintenus identiques
-  entre les deux horizons; l'effet SERM est porté uniquement par les arrêts
-  structurants (les extensions cyclables programmées ne sont pas modélisées en
-  Phase 1).
-- **Haltes du réseau cible SERM** : en l'absence de couche SIG officielle à ce stade, 
-  les coordonnées des haltes projetées sont géolocalisées manuellement à 
-  partir des documents techniques publics (délibération du 15/12/2025, schémas 
-  de préfiguration).
-- **Périmètre exclu (extensions ultérieures)** :
-    - routage depuis les lieux de travail (base SIRENE);
-    - analyse multicritères PLUi / PDM / SERM;
-    - découpage du réseau cible en jalons datés (états intermédiaires, p. ex. 
-      pré-LNPN), à traiter lorsque le calendrier de mise en service sera 
-      stabilisé.
-- **Rattachement des arrêts au réseau (snap-to-node)** : chaque arrêt est routé
-  depuis le nœud du graphe le plus proche, le tronçon d'approche n'étant ni routé
-  ni décompté du budget-temps. Pour les modes structurants (Métro, TEOR, Train),
-  qui portent l'indicateur, ce rattachement reste sous 70 m dans tous les cas
-  (médiane 15 m à pied, 23 m à vélo; p95 ≤ 50 m), soit moins d'une minute de
-  parcours, du même ordre que l'imprécision du carroyage. Le maillage bus,
-  hors hiérarchie, présente un arrêt isolé à 460 m, sans incidence sur l'analyse.
-  - **Arrêts sur arêtes longues (zones à habitat dispersé)** : le rattachement au
-  nœud le plus proche (et non à l'arête) atteint sa limite lorsqu'un arrêt se
-  situe au milieu d'une arête OSM longue et non subdivisée, fréquente en secteur
-  rural. L'arrêt est alors routé depuis une extrémité de l'arête : un arrêt de
-  desserte rurale (Le Conihout, Le Mesnil-sous-Jumièges, ligne de bus 206) est
-  ainsi rattaché à 460 m alors que le réseau passe sous l'arrêt. Le cas ne
-  concerne que des arrêts bus isolés en zone peu peuplée, hors hiérarchie
-  structurante : aucune incidence sur l'indicateur, et le *snap-to-node* est donc
-  conservé pour les arrêts (nb03). Le rattachement des **carreaux de population**
-  au réseau (nb05) adopte en revanche un *snap-to-edge* (projection sur l'arête,
-  non sur le nœud le plus proche) précisément parce que les carreaux sont bien
-  plus nombreux que les arrêts et tombent fréquemment sur ces longues arêtes
-  rurales; le tronçon d'approche y est alors décompté du budget-temps (cf. point
-  suivant).
-- **Rattachement des carreaux au réseau (snap-to-edge, nb05)** : chaque carreau
-  est rattaché par son point représentatif (`representative_point`, garanti
-  intérieur y compris pour les carreaux tronqués en limite de MRN) à l'arête la
-  plus proche; le meilleur niveau atteignable est lu via les deux nœuds extrémités
-  de l'arête, le tronçon d'approche le long de l'arête étant décompté du
-  budget-temps (15 min) grâce au temps d'accès continu porté par `acces_noeuds`
-  (nb03). Subsiste un biais résiduel de rattachement, du même ordre que
-  l'imprécision du carroyage et, pour les carreaux de bord, l'hypothèse de
-  densité uniforme déjà signalée à l'écart de population.
-- **Correction du tronçon d'approche (nb05)** : le temps de parcours entre le
-  point représentatif d'un carreau et le nœud extrémité de l'arête snappée est
-  estimé depuis la distance orthogonale de snap, qui est une borne inférieure de
-  la distance curviligne réelle jusqu'à `u` ou `v`. La correction est donc
-  légèrement optimiste : elle sous-estime marginalement le tronçon d'approche,
-  de façon cohérente avec la précision du carroyage.
-- **Densité uniforme sur les carreaux de bordure (nb05)** : les carreaux tronqués
-  par la limite de la MRN voient leur population pondérée au prorata de la surface
-  conservée (`ind_pond = ind × frac`), sous hypothèse de densité uniforme à
-  l'intérieur du carreau. Cette hypothèse introduit une erreur systématique pour
-  les carreaux dont la population est concentrée dans la partie exclue (ex. :
-  bourg en limite de MRN).
-- **Validation croisée point-dans-polygone (nb05)** : la concordance entre le
-  snap-to-edge et la méthode point-dans-polygone contre `isochrones_2026` est de
-  74,6 %. Les 25,4 % de divergences sont quasi-exclusivement des carreaux dont le
-  point représentatif est à plus de 50 m de toute arête atteinte (`TAMPON_ISO`
-  étant un paramètre cartographique, non analytique). Ces divergences confirment la
-  supériorité du snap-to-edge sur le point-dans-polygone pour les carreaux éloignés
-  des arêtes.
-  **Traversées de bac exclues du réseau viaire** Les bacs sur la Seine (Duclair, Jumièges, La Bouille, Sahurs, Mesnil-sous-Jumièges) constituent des liaisons physiques inter-rives mais ne sont pas modélisés comme arêtes dans les graphes piéton et vélo. Deux raisons : leur fréquence horaire, discontinue et non alignée sur celle des lignes TC qu'ils permettent d'atteindre, introduirait un temps d'attente variable incompatible avec l'hypothèse de déplacement continu retenue dans le pipeline; et leur temps de traversée (5 min de trajet, auxquels s'ajoutent embarquement et débarquement) est négligeable devant le budget de 15 min, ce qui en ferait une arête à fort impact topologique pour un gain de temps modeste. L'accessibilité des secteurs riverains de la Seine est donc légèrement sous-estimée pour les habitants situés à moins de 15 min d'un embarcadère.
+La note de limites destinée à un lecteur externe (portée de la méthode,
+précision des sources, hypothèses simplificatrices, dépendance aux
+référentiels externes vivants, conditions de transposition) est dans
+[`docs/methode.md`](docs/methode.md#note-de-limites-et-domaine-de-validité).
+
+Les points suivants complètent cette note avec le détail d'implémentation,
+utile pour qui reprend ou audite le code plutôt que pour un lecteur du
+livrable final :
+
+- **Rattachement des arrêts au réseau (snap-to-node, nb03)** : chaque arrêt
+  est routé depuis le nœud du graphe le plus proche, le tronçon d'approche
+  n'étant ni routé ni décompté du budget-temps. Pour les modes structurants
+  (Métro, TEOR, Train), qui portent l'indicateur, ce rattachement reste sous
+  70 m dans tous les cas (médiane 15 m à pied, 23 m à vélo; p95 ≤ 50 m). Le
+  maillage bus, hors hiérarchie, présente un arrêt isolé à 460 m
+  (Le Conihout, Le Mesnil-sous-Jumièges, ligne 206), routé depuis une
+  extrémité d'arête OSM longue et non subdivisée : sans incidence sur
+  l'indicateur, le *snap-to-node* est donc conservé pour les arrêts.
+- **Rattachement des carreaux au réseau (snap-to-edge, nb05)** : contrairement
+  aux arrêts, chaque carreau de population est rattaché par son point
+  représentatif (`representative_point`) à l'arête la plus proche plutôt
+  qu'au nœud, parce que les carreaux sont bien plus nombreux et tombent
+  fréquemment sur des arêtes longues en secteur rural. Le tronçon d'approche
+  le long de l'arête est alors décompté du budget-temps grâce au temps
+  d'accès continu porté par `acces_noeuds` (nb03).
+- **Correction du tronçon d'approche (nb05)** : estimée depuis la distance
+  orthogonale de snap, borne inférieure de la distance curviligne réelle
+  jusqu'à l'extrémité de l'arête. La correction est donc légèrement
+  optimiste, dans une mesure cohérente avec la précision du carroyage.
+- **Densité uniforme sur les carreaux de bordure (nb05)** : les carreaux
+  tronqués par la limite de la MRN voient leur population pondérée au
+  prorata de la surface conservée (`ind_pond = ind × frac`), ce qui
+  introduit une erreur systématique pour les carreaux dont la population
+  est concentrée dans la partie exclue.
+- **Validation croisée point-dans-polygone (nb05)** : la concordance entre
+  le snap-to-edge et la méthode point-dans-polygone contre `isochrones_2026`
+  est de 74,6 %. Les 25,4 % de divergences sont quasi exclusivement des
+  carreaux dont le point représentatif est à plus de 50 m de toute arête
+  atteinte, ce qui confirme la supériorité du snap-to-edge pour les carreaux
+  éloignés des arêtes.
+- **Traversées de bac exclues du réseau viaire** : les bacs sur la Seine
+  (Duclair, Jumièges, La Bouille, Sahurs, Mesnil-sous-Jumièges) ne sont pas
+  modélisés comme arêtes, leur fréquence discontinue étant incompatible avec
+  l'hypothèse de déplacement continu du pipeline. L'accessibilité des
+  secteurs riverains concernés est donc légèrement sous-estimée.
+- **Périmètre exclu (extensions ultérieures)** : routage depuis les lieux de
+  travail (base SIRENE); analyse multicritères PLUi / PDM / SERM; découpage
+  du réseau cible en jalons datés, à traiter lorsque le calendrier de mise
+  en service sera stabilisé.
 
 ## Structure du projet
 ```
