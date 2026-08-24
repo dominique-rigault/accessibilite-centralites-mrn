@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "accessibilite-mrn-serm"
+version = "0.1.0"
+description = "Analyse de l'accessibilité bas carbone aux centralités · Métropole Rouen Normandie / SERM"
+requires-python = ">=3.11"
+dependencies = [
+    "geopandas>=0.14",
+    "osmnx>=1.9",
+    "networkx>=3.2",
+    "pandas>=2.1",
+    "numpy>=1.26",
+    "folium>=0.15",
+    "shapely>=2.0",
+    "openpyxl>=3.1",
+    "scipy>=1.11",
+]
+
+[tool.setuptools]
+packages = ["src"]
