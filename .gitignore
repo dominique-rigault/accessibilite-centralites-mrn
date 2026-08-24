@@ -2,14 +2,20 @@ cache/
 raw/
 notebooks/util.py
 
-# Données traitées — régénérables par les notebooks
+# Artefacts de l'installation éditable (pip install -e .)
+*.egg-info/
+__pycache__/
+*.pyc
+.venv/
+
+# Données traitées, régénérables par les notebooks
 data/*.gpkg
 data/*.gpkg-shm
 data/*.gpkg-wal
 data/*.graphml
 data/*.qgz
 
-# modèles QGIS
+# Modèles QGIS
 docs/*.qml
 docs/*.qpt
 
