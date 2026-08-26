@@ -1,6 +1,7 @@
 cache/
 raw/
 notebooks/util.py
+notebooks/util.ipynb
 
 # Artefacts de l'installation éditable (pip install -e .)
 *.egg-info/
@@ -18,6 +19,9 @@ data/*.qgz
 # Modèles QGIS
 docs/*.qml
 docs/*.qpt
+
+# Documents de communication client, non versionnés
+docs/communication/
 
 # Exception : périmètre MRN (référence stable)
 !data/perimetre_MRN.gpkg
